@@ -15,6 +15,7 @@ call plug#begin("~/.config/nvim/plugged/")
     Plug 'junegunn/fzf'
     Plug 'junegunn/fzf.vim'
     Plug 'voldikss/vim-floaterm'
+    Plug 'preservim/nerdcommenter'
 
     " LSP+DAP support
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -30,6 +31,7 @@ source $HOME/.config/nvim/configs/airline.vim
 source $HOME/.config/nvim/configs/indentline.vim
 
 " Utilities
+source $HOME/.config/nvim/configs/commenter.vim
 source $HOME/.config/nvim/configs/floaterm.vim
 source $HOME/.config/nvim/configs/fzf.vim
 

@@ -2,14 +2,14 @@
 "
 
 nnoremap <leader>fc    :LspDiagnosticsAll<CR>
-nnoremap <leader>cd     :lua vim.lsp.buf.definition()<CR>
-nnoremap <leader>ci     :lua vim.lsp.buf.implementation()<CR>
-nnoremap <leader>csh    :lua vim.lsp.buf.signature_help()<CR>
-nnoremap <leader>crr    :lua vim.lsp.buf.references()<CR>
-nnoremap <leader>crn    :lua vim.lsp.buf.rename()<CR>
-nnoremap <leader>ch     :lua vim.lsp.buf.hover()<CR>
-nnoremap <leader>cca    :lua vim.lsp.buf.code_action()<CR>
-nnoremap <leader>cn     :lua vim.lsp.diagnostic.goto_next()<CR>
+nnoremap <leader>vd     :lua vim.lsp.buf.definition()<CR>
+nnoremap <leader>vi     :lua vim.lsp.buf.implementation()<CR>
+nnoremap <leader>vsh    :lua vim.lsp.buf.signature_help()<CR>
+nnoremap <leader>vrr    :lua vim.lsp.buf.references()<CR>
+nnoremap <leader>vrn    :lua vim.lsp.buf.rename()<CR>
+nnoremap <leader>vh     :lua vim.lsp.buf.hover()<CR>
+nnoremap <leader>vca    :lua vim.lsp.buf.code_action()<CR>
+nnoremap <leader>vn     :lua vim.lsp.diagnostic.goto_next()<CR>
 
 lua << EOF
 
