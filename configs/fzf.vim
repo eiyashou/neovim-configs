@@ -23,4 +23,5 @@ command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 nnoremap <leader>ff   :Files<CR>
 nnoremap <leader>fb   :Buffers<CR>
 nnoremap <leader>fl   :Lines<CR>
-nnoremap <leader>ft   :Lines<CR>// TODO
+nnoremap <leader>fg   :BLines<CR>
+nnoremap <leader>ft   :Lines<CR>//TODO

@@ -1,7 +1,7 @@
 " vim:ft=lua
 "
 
-nnoremap <leader>fc    :LspDiagnosticsAll<CR>
+nnoremap <leader>fc     :LspDiagnosticsAll<CR>
 nnoremap <leader>vd     :lua vim.lsp.buf.definition()<CR>
 nnoremap <leader>vi     :lua vim.lsp.buf.implementation()<CR>
 nnoremap <leader>vsh    :lua vim.lsp.buf.signature_help()<CR>

@@ -9,3 +9,6 @@ let g:floaterm_width=0.8
 let g:floaterm_height=0.8
 let g:floaterm_wintitle=0
 let g:floaterm_autoclose=1
+
+nnoremap <leader>dc     :FloatermNew gdb<space>
+nnoremap <leader>dp     :FloatermNew pudb3 %<CR>
