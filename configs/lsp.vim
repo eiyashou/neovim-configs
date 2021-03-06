@@ -1,21 +1,17 @@
 " vim:ft=lua
 "
 
-nnoremap <leader>fc     :LspDiagnosticsAll<CR>
 nnoremap <leader>vd     :lua vim.lsp.buf.definition()<CR>
 nnoremap <leader>vi     :lua vim.lsp.buf.implementation()<CR>
 nnoremap <leader>vsh    :lua vim.lsp.buf.signature_help()<CR>
 nnoremap <leader>vrr    :lua vim.lsp.buf.references()<CR>
 nnoremap <leader>vrn    :lua vim.lsp.buf.rename()<CR>
 nnoremap <leader>vh     :lua vim.lsp.buf.hover()<CR>
-nnoremap <leader>vca    :lua vim.lsp.buf.code_action()<CR>
 nnoremap <leader>vn     :lua vim.lsp.diagnostic.goto_next()<CR>
 
 lua << EOF
 
-require('lspfuzzy').setup {}
-
-local lsp = require 'lspconfig'
+local lsp = require'lspconfig'
 
 local on_attach = function(client, bufnr)
     -- Set autocommands conditional on server_capabilities
@@ -40,7 +36,7 @@ lsp.ccls.setup {
     root_dir = lsp.util.root_pattern(".git", ".ccls");
 
     init_options = {
-        compilationDatabaseDirectory = "bin";
+        compilationDatabaseDirectory = "build";
         cache = {
             directory = "/tmp/ccls-cache";
         };

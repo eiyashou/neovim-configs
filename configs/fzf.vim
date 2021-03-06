@@ -24,4 +24,4 @@ nnoremap <leader>ff   :Files<CR>
 nnoremap <leader>fb   :Buffers<CR>
 nnoremap <leader>fl   :Lines<CR>
 nnoremap <leader>fg   :BLines<CR>
-nnoremap <leader>ft   :Lines<CR>//TODO
+nnoremap <leader>ft   :Lines<CR>// TODO

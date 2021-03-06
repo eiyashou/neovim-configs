@@ -1,7 +1,6 @@
 " Base configs with no plugins
 source $HOME/.config/nvim/configs/settings.vim
 source $HOME/.config/nvim/configs/mappings.vim
-source $HOME/.config/nvim/configs/autocmds.vim
 
 call plug#begin("~/.config/nvim/plugged/")
     " Prettyify this mfer
