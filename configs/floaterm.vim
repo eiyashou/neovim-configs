@@ -12,4 +12,3 @@ let g:floaterm_autoclose=1
 
 nnoremap <leader>dc     :FloatermNew gdb<space>
 nnoremap <leader>dp     :FloatermNew pudb3 %<CR>
-nnoremap <leader>kk         :FloatermNew curl cht.sh/

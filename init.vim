@@ -1,1 +1,1 @@
-/home/eiya/.config/nvim/inits/test.vim
+/home/eiya/.config/nvim/modes/test.vim

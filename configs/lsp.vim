@@ -9,6 +9,9 @@ nnoremap <leader>vrn    :lua vim.lsp.buf.rename()<CR>
 nnoremap <leader>vh     :lua vim.lsp.buf.hover()<CR>
 nnoremap <leader>vn     :lua vim.lsp.diagnostic.goto_next()<CR>
 
+let &t_8f = "\<ESC>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<ESC>[48;2;%lu;%lu;%lum"
+
 lua << EOF
 
 local lsp = require'lspconfig'

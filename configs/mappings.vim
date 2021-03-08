@@ -23,83 +23,112 @@ nnoremap <C-p>          "+p
 vnoremap <C-p>          "+p
 vnoremap <C-c>          "*y :let @+=@*<CR>
 
+" Window Nav
+nnoremap <C-Left>       <C-w>h
+nnoremap <C-Down>       <C-w>j
+nnoremap <C-Up>         <C-w>k
+nnoremap <C-Right>      <C-w>l
+
 " Misc utilities
-nnoremap <leader>rc         :source $MYVIMRC<CR>
-nnoremap <leader><space>    :
-nnoremap <leader>fs         :20Lexplore<CR>
+nnoremap <silent> <leader>rc         :source $MYVIMRC<CR>
+nnoremap <silent> <leader>fs         :20Lexplore<CR>
+nnoremap <leader>kk                  :call CheatSheet(input('Insert language: '), input('Insert question: '))<CR>
 
-"" AUTOCOMMANDS ""
+function! CheatSheet(language, question)
+    let que = strlen(a:question) ? "/" . join(split(a:question), "+") : ""
+    execute "term curl cht.sh/" . a:language . l:que
+endfunction
 
-" Trimming white space off
-fun! TrimWhitespace()
-    let l:save = winsaveview()
-    keeppatterns %s/\s\+$//e
-    call winrestview(l:save)
-endfun
-
-augroup TrimWhiteSpaceAuto
-    autocmd!
-    autocmd BufWritePre * :call TrimWhitespace()
-augroup END
+" " AUTOCOMMANDS
 
 " Commenting
 augroup CommentingCodeAuto
     autocmd!
-    " //
-    autocmd Filetype c,cpp,java
-            \ let b:commentCommand='I// ' |
-            \ let b:unCommentCommand='^xxx'
-
-    " #
-    autocmd Filetype sh,conf,fstab,ruby,python
-            \ let b:commentCommand='I# ' |
-            \ let b:unCommentCommand='^xx'
-
-    " %
-    autocmd Filetype tex
-            \ let b:commentCommand='I% ' |
-            \ let b:unCommentCommand='^xx'
-
-    " "
-    autocmd Filetype vim
-            \ let b:commentCommand='I" ' |
-            \ let b:unCommentCommand='^xx'
-
-    " --
-    autocmd Filetype lua,haskell
-            \ let b:commentCommand='I-- ' |
-            \ let b:unCommentCommand='^xxx'
+    autocmd Filetype c,cpp,java                 let b:commentCommand='// '
+    autocmd Filetype sh,conf,fstab,ruby,python  let b:commentCommand='# '
+    autocmd Filetype tex                        let b:commentCommand='% '
+    autocmd Filetype vim                        let b:commentCommand='" '
+    autocmd Filetype lua,haskell                let b:commentCommand='-- '
+    autocmd Filetype dosini                     let b:commentCommand='; '
+    autocmd Filetype xdefaults                  let b:commentCommand='! '
 augroup END
 
+noremap <silent> <expr> CC ':<S-Left>exe "<S-Right>normal! ^i".b:commentCommand<CR>'
 noremap <silent> <expr> <leader>cc (synIDattr(synID(line("."), col("."), 0), "name") =~ 'comment\c') ?
-                                    \ ':<S-Left>exe "<S-Right>normal! ".b:unCommentCommand<CR>' :
-                                    \ ':<S-Left>exe "<S-Right>normal! ".b:commentCommand<CR>'
+                                    \ ':<S-Left>exe "<S-Right>normal! ^" . strlen(b:commentCommand) . "x"<CR>' :
+                                    \ ':<S-Left>exe "<S-Right>normal! ^i" . b:commentCommand<CR>'
 
-" Snippets
-augroup SnippetsAuto
-    autocmd!
-    " For a wrapping <> experience
-    autocmd FileType html,vim,xhtml,xml,c,cpp,h,hpp
-            \ inoremap < <lt>><ESC>i
 
-    autocmd FileType c,cpp,h,hpp,rs,vim,python
-            \ inoremap ( ()<ESC>i
+" Wow! Snippet hell!!
+let g:toggleSnippets = 1
+function! ToggleSnippets()
+    let g:toggleSnippets = 1 - g:toggleSnippets
+    echom "Snippets o" . (g:toggleSnippets ? "n" : "ff") . "!"
+    call RefreshToggleSnippets()
+endfunction
 
-    " Useful guard for latex
-    function! s:insert_tex()
-        execute "normal! i\\documentclass{article}\n\n\\title{}\n\\date{}\n\\author{}\n\n\\begin{document}\n\\maketitle\n\n\n\n\\end{document}"
-        execute "normal! kk"
-    endfunction
-    autocmd BufNewFile *.tex call <SID>insert_tex()
+function! RefreshToggleSnippets()
+    if g:toggleSnippets == 1
+        augroup SnippetsAuto
+            autocmd!
 
-    " Useful auto-snippet for .h/.hpp headers
-    function! s:insert_gates()
-        let gatename = "__" . substitute(toupper(expand("%:t")), "\\.", "_", "g") . "__"
-        execute "normal! i#ifndef " . gatename
-        execute "normal! o#define " . gatename . " "
-        execute "normal! Go#endif /* " . gatename . " */"
-        execute "normal! 2gg3o"
-        execute "normal! k"
-    endfunction
-    autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
-augroup END
+            " Wrapping
+            autocmd FileType html,vim,xhtml,xml,c,cpp,h,hpp
+                \ inoremap < <lt>><ESC>i
+            autocmd FileType c,cpp,h,hpp,rs,vim,python
+                \ inoremap ( ()<ESC>i
+            autocmd FileType c,cpp,h,hpp,rs
+                \ inoremap { {}<ESC>i
+            autocmd FileType python,rs
+                \ inoremap [ []<ESC>i
+
+            " All the file templates
+            autocmd BufNewFile *.tex
+                \ execute "normal! i\\documentclass{article}\n\n\\title{}\n\\date{}\n\\author{}\n\n\\begin{document}\n\\maketitle\n\n\n\n\\end{document}" |
+                \ execute "normal! kk"
+            autocmd BufNewFile {main,debug}.c
+                \ execute "normal! i#include <stdio.h>\n#include <string.h>\n#include <stdlib.h>\n\n\nint main(){\n\n}" |
+                \ execute "normal! ki \t"
+            autocmd BufNewFile {main,debug}.cpp
+                \ execute "normal! i#include <iostream>\n\n\nint main(){\n\n}" |
+                \ execute "normal! ki \t"
+            autocmd BufNewFile *.{h,hpp}
+                \ let b:gatename = "__" . substitute(toupper(expand("%:t")), "\\.", "_", "g") . "__" |
+                \ execute "normal! i#ifndef " . b:gatename . "\n#define " . b:gatename . "\n\n\n\n#endif /* " . b:gatename . " */" |
+                \ execute "normal! 4gg"
+
+        augroup END
+
+    else
+        autocmd! SnippetsAuto
+    endif
+endfunction
+
+nnoremap <silent> <leader>ts    :call ToggleSnippets()<CR>
+call RefreshToggleSnippets()
+
+
+" White Trimming
+let g:toggleTrimming = 1
+function! ToggleTrimming()
+    let g:toggleTrimming = 1 - g:toggleTrimming
+    echom "White Space Trimming o" . (g:toggleTrimming ? "n" : "ff") . "!"
+    call RefreshToggleTrimming()
+endfunction
+
+function! RefreshToggleTrimming()
+    if g:toggleTrimming == 1
+        augroup TrimWhiteSpaceAuto
+            autocmd!
+            autocmd BufWritePre *
+                \ let b:save_view = winsaveview() |
+                \ keeppatterns %s/\s\+$//e        |
+                \ call winrestview(b:save_view)
+        augroup END
+    else
+        autocmd! TrimWhiteSpaceAuto
+    endif
+endfunction
+
+nnoremap <silent> <leader>tt    :call ToggleTrimming()<CR>
+autocmd BufWinEnter * call RefreshToggleTrimming()
